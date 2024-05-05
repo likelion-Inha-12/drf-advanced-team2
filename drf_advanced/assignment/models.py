@@ -1,3 +1,33 @@
 from django.db import models
 
-# Create your models here.
+
+# 카테고리 table
+class Category(models.Model):
+    name = models.CharField(max_length = 10)
+
+    def __str__(self):
+        return self.name
+
+# 과제 table
+class Assignment(models.Model):
+    title = models.CharField(max_length = 100)
+    created_at = models.DateTimeField(auto_now_add = True)
+    deadline = models.DateTimeField()
+    part = models.CharField(max_length = 10)
+    #category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category = models.CharField(max_length = 20)
+    github_link = models.URLField()
+    content = models.TextField()
+
+    def __str__(self):
+        return self.title
+    
+# 제출 table
+class Submission(models.Model):
+    assignment_id = models.ForeignKey(Assignment, on_delete=models.CASCADE, related_name="submissions")
+    description = models.TextField() # 과제에 대한 설명
+    github_link = models.URLField()
+    created_at = models.DateTimeField(auto_now_add = True)
+
+    def __str__(self):
+        return self.description
