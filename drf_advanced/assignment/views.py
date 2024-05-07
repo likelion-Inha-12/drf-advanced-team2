@@ -5,8 +5,9 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import View, APIView
+
 from django.core.serializers import serialize
-from .serializers import AssignmentSerializer
+from .serializers import *
 from .models import *
 
 '''
@@ -107,15 +108,31 @@ def get_assignment(request):
     
 
 
-#api 4
+#api 4, 7, 8
 class AssignmentApiView(APIView):
 
     def get_object(self, pk):
         assignment = get_object_or_404(Assignment, pk=pk)
         return assignment
 
-    def get(self, request, pk):
-        assignment = self.get_object(pk)
+    def get(self, request, pk = None):
 
-        assignmentSerializer = AssignmentSerializer(assignment)
-        return JsonResponse(assignmentSerializer.data, status=status.HTTP_200_OK)
+        if pk is not None: # api 4 - 특정 과제 조회
+            assignment = self.get_object(pk)
+            assignmentSerializer = AssignmentSerializer(assignment)
+            return JsonResponse(assignmentSerializer.data, status=status.HTTP_200_OK)
+        
+        part = request.GET.get('part') 
+        category = request.GET.get('category')
+
+        if part: # api 7 - 파트별 과제 조회
+            assignments = Assignment.objects.filter(part = part)
+            assignmentSerializer = PartAssignmentSerializer(assignments, many=True)
+            return JsonResponse(assignmentSerializer.data, safe=False, status=status.HTTP_200_OK)
+        
+        if category: # api 8 - 카테고리별 과제 조회
+            assignments = Assignment.objects.filter(category__name = category)
+            assignmentSerializer = SimpleAssignmentSerializer(assignments, many=True)
+            return JsonResponse(assignmentSerializer.data, safe=False, status=status.HTTP_200_OK)
+        
+    
