@@ -31,3 +31,19 @@ class AssignmentSerializer(serializers.ModelSerializer):
     
     def get_submissions_count(self, obj):
         return obj.submissions.count()
+    
+class PartAssignmentSerializer(serializers.ModelSerializer):
+    title = serializers.CharField(max_length = 100)
+    created_at = serializers.DateTimeField()
+    part = serializers.CharField()
+
+    class Meta:
+        model = Assignment
+        fields = ["title", "created_at", "part"]
+
+class SimpleAssignmentSerializer(serializers.ModelSerializer): # 과제 title
+    title = serializers.CharField(max_length = 100)
+
+    class Meta:
+        model = Assignment
+        fields = ["title"]
