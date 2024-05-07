@@ -40,3 +40,10 @@ class PartAssignmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Assignment
         fields = ["title", "created_at", "part"]
+
+class SimpleAssignmentSerializer(serializers.ModelSerializer): # 과제 title
+    title = serializers.CharField(max_length = 100)
+
+    class Meta:
+        model = Assignment
+        fields = ["title"]
