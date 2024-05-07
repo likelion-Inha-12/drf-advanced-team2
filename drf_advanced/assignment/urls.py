@@ -4,5 +4,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+    path('create/',views.create_assignment),
+    path('createsub/',views.create_submission),
     path('assignment/<int:pk>',views.AssignmentApiView.as_view())
 ]
