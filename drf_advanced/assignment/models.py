@@ -19,9 +19,7 @@ class Assignment(models.Model):
     created_at = models.DateTimeField(auto_now_add = True)
     deadline = models.DateTimeField()
     part = models.CharField(max_length = 10,choices=PART_CHOICES)
-    #category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    #category = models.CharField(max_length = 20)
-    category=models.ForeignKey(Category, verbose_name = "subject_category", on_delete=models.CASCADE, related_name="category")
+    category=models.ForeignKey(Category, on_delete=models.DO_NOTHING, related_name="category",null=True)
     github_link = models.URLField()
     content = models.TextField()
 
