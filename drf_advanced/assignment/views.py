@@ -10,23 +10,6 @@ from django.core.serializers import serialize
 from .serializers import *
 from .models import *
 
-'''
-@api_view(['POST'])
-def create_assignment_v2(request):
-    assignment = Assignment(
-        title = request.data.get('title'),
-        deadline = request.data.get('deadline'),
-        part = request.data.get('part'),
-        category = request.data.get('category'),
-        created_at = request.data.get('created_at'),
-        github_link = request.data.get('github_link'),
-        content = request.data.get('content')
-    )
-    assignment.save()
-
-    message = f"id: {assignment.pk}번 포스트생성 성공"
-    return JsonResponse({'message': 'success'})
-'''
 #api 1
 def create_assignment(request):
     if request.method == "POST":
