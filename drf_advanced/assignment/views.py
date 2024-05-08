@@ -106,6 +106,28 @@ def get_assignment(request):
     }
     return JsonResponse(response_data, status=200)
     
+#api 5 - 특정 과제 수정
+@api_view(['PATCH'])
+def update_assignment(request, pk):
+    assignment = get_object_or_404(Assignment, pk=pk)
+
+    if request.method == 'PATCH':
+        data = request.data
+        serializer = AssignmentSerializer(assignment, data=data, partial=True)
+       
+    if serializer.is_valid():
+        serializer.save()
+        return JsonResponse(serializer.data, status=status.HTTP_200_OK)
+    return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+#api6 - 특정 과제 삭제
+@api_view(['DELETE'])
+def delete_assignment(request, pk):
+    assignment = get_object_or_404(Assignment, pk=pk)
+
+    if request.method == 'DELETE':
+        assignment.delete()
+        return JsonResponse({'message': '과제 및 연관된 제출물들이 삭제되었습니다.'}, status=status.HTTP_204_NO_CONTENT)
 
 
 #api 4, 7, 8
